@@ -4,6 +4,7 @@ $(document).ready(function(){
   var guessCount = 0;
   var feedback = $('h2#feedback');
   var userGuess = $('input#userGuess');
+  var gameOver = false;
 
   newGame();
 	
@@ -19,7 +20,7 @@ $(document).ready(function(){
 
   	});
 
-    // unbind old event so we can start with a new one
+    /*--- unbind old event so we can start with a new one ---*/
     $("a.new").click(function(){
       $('form').unbind();
       newGame();
@@ -106,6 +107,19 @@ $(document).ready(function(){
     
     }
 
+    /*--- Optional function for comparing current guess with previous guess ---*/
+    function previousGuess(former, current, realNum) {
+      if (realNum - current < realNum - former) {
+        feedback.text("You are getting warmer.");
+      }
+      else if (realNum - current > realNum - former) {
+        feedback.text("You are getting colder.");
+      }
+      else {
+        feedback.text("You are at the same temperature.");
+      }
+    }
+
     function compare(guess, number) {
       if (isValid(guess) !== false) {
           var validGuess = isValid(guess);
@@ -120,6 +134,7 @@ $(document).ready(function(){
           }
           else if (validGuess === number) {
             feedback.text("You guessed it! " + number);
+            gameOver = true;
           }
           else {
           }
@@ -132,17 +147,24 @@ $(document).ready(function(){
     function newGame() {
 
       var theNumber = Math.floor((Math.random() * 100) + 1);
+      console.log(theNumber);
+
       userGuess.val("");
       feedback.text("Make your Guess!");
       guessCount = 0;
+
       $('span#count').text(guessCount);
+      $('ul#guessList').empty();
     
       $('form').submit( function(e) {
         e.preventDefault();
         currentGuess = userGuess.val();
         userGuess.val("");
 
-        compare(currentGuess, theNumber);
+        if (gameOver == false)
+          compare(currentGuess, theNumber);
+        else
+          feedback.text("You already won! Start a new game!");
             
         });
 
