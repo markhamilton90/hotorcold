@@ -39,20 +39,92 @@ $(document).ready(function(){
         return input;
     }
 
+    function tooHigh(number, realNum) {
+      if (number - realNum >= 60) {
+        feedback.text("You are on the planet Hoth.");
+      }
+      else if (number - realNum >= 50) {
+        feedback.text("You are ICE cold.");
+      }
+      else if (number - realNum >= 45) {
+        feedback.text("You're cold... VERY cold.");
+      }
+      else if (number - realNum >= 40) {
+        feedback.text("You are cold.");
+      }
+      else if (number - realNum >= 30) {
+        feedback.text("You are pretty chilly.");
+      }
+      else if (number - realNum >= 25) {
+        feedback.text("You are lukewarm.");
+      }
+      else if (number - realNum >= 20) {
+        feedback.text("You are warm.");
+      }
+      else if (number - realNum >= 15) {
+        feedback.text("You're heating up!");
+      }
+      else if (number - realNum >= 10) {
+        feedback.text("You are hot!");
+      }
+      else if (number - realNum >= 1) {
+        feedback.text("You are super hot!");
+      }
+    }
+
+    function tooLow(number, realNum) {
+      if (realNum - number >= 60) {
+        feedback.text("You are on the planet Hoth.");
+      }
+      else if (realNum - number >= 50) {
+        feedback.text("You are ICE cold.");
+      }
+      else if (realNum - number >= 45) {
+        feedback.text("You're cold... VERY cold.");
+      }
+      else if (realNum - number >= 40) {
+        feedback.text("You are cold.");
+      }
+      else if (realNum - number >= 30) {
+        feedback.text("You are pretty chilly.");
+      }
+      else if (realNum - number >= 25) {
+        feedback.text("You are lukewarm.");
+      }
+      else if (realNum - number >= 20) {
+        feedback.text("You are warm.");
+      }
+      else if (realNum - number >= 15) {
+        feedback.text("You're heating up!");
+      }
+      else if (realNum - number >= 10) {
+        feedback.text("You are hot!");
+      }
+      else if (realNum - number >= 1) {
+        feedback.text("You are super hot!");
+      }
+    
+    }
+
     function compare(guess, number) {
       if (isValid(guess) !== false) {
           var validGuess = isValid(guess);
           guessCount++;
           $('span#count').text(guessCount);
 
-          if (validGuess > number)
-            feedback.text("Too high: " + number);
-          else if (validGuess < number)
-            feedback.text("Too low: " + number);
-          else if (validGuess === number)
+          if (validGuess > number) {
+            tooHigh(validGuess, number);
+          }
+          else if (validGuess < number) {
+            tooLow(validGuess, number)
+          }
+          else if (validGuess === number) {
             feedback.text("You guessed it! " + number);
+          }
           else {
           }
+
+          $('ul#guessList').prepend("<li>" + validGuess + "</li>");
 
         }
       }
