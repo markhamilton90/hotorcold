@@ -32,7 +32,7 @@ $(document).ready(function(){
         feedback.text("You must enter a valid integer!");
         return false;
       }
-      else if (input > 100 || input < 0) {
+      else if (input > 100 || input < 1) {
         feedback.text("You must enter a number between 1 and 100!");
         return false;
       }
@@ -122,32 +122,45 @@ $(document).ready(function(){
 
     function compare(guess, number) {
       if (isValid(guess) !== false) {
-          var validGuess = isValid(guess);
+          guess = isValid(guess); 
           guessCount++;
           $('span#count').text(guessCount);
 
-          if (validGuess > number) {
-            tooHigh(validGuess, number);
+          if (guess > number) {
+            tooHigh(guess, number);
           }
-          else if (validGuess < number) {
-            tooLow(validGuess, number)
+          else if (guess < number) {
+            tooLow(guess, number)
           }
-          else if (validGuess === number) {
+          else if (guess === number) {
             feedback.text("You guessed it! " + number);
             gameOver = true;
           }
           else {
           }
-
-          $('ul#guessList').prepend("<li>" + validGuess + "</li>");
+          $('ul#guessList').prepend("<li>" + guess + "</li>");
 
         }
       }
 
+    function submitForm(number) {
+      $('form').submit( function(e) {
+        e.preventDefault();
+        currentGuess = userGuess.val();
+        userGuess.val("");
+
+        if (gameOver == false)
+          compare(currentGuess, number);
+        else
+          feedback.text("You already won! Start a new game!");     
+        });
+    }
+
     function newGame() {
 
-      var theNumber = Math.floor((Math.random() * 100) + 1);
-      console.log(theNumber);
+      var number = Math.floor((Math.random() * 100) + 1);
+      console.log(number);
+      gameOver = false;
 
       userGuess.val("");
       feedback.text("Make your Guess!");
@@ -156,17 +169,7 @@ $(document).ready(function(){
       $('span#count').text(guessCount);
       $('ul#guessList').empty();
     
-      $('form').submit( function(e) {
-        e.preventDefault();
-        currentGuess = userGuess.val();
-        userGuess.val("");
-
-        if (gameOver == false)
-          compare(currentGuess, theNumber);
-        else
-          feedback.text("You already won! Start a new game!");
-            
-        });
+      submitForm(number);
 
     }
 
